@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.tvdash.backend.exceptions.MSUnableToGetFileTypeException;
 import com.tvdash.backend.exceptions.MSUnableToPutObjectException;
-import com.tvdash.backend.exceptions.MSUnknownException;
 import com.tvdash.backend.exceptions.MSUnsupportedMediaException;
 import com.tvdash.backend.model.TableauCard;
 import com.tvdash.backend.repository.TableauCardRepository;
@@ -63,12 +62,7 @@ public class TableauCardController {
             } catch (MSUnsupportedMediaException e) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                     .body("Only PNG, JPG and SVG files are allowed.");
-            } catch (MSUnknownException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to upload file: " + e.getMessage());
-            } catch (MSUnableToGetFileTypeException ex) {
-                System.getLogger(TableauCardController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            } catch (MSUnableToPutObjectException ex) {
+            } catch (MSUnableToGetFileTypeException | MSUnableToPutObjectException ex) {
                 System.getLogger(TableauCardController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
 

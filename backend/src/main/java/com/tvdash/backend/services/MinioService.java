@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.tvdash.backend.config.MinioProperties;
 import com.tvdash.backend.exceptions.MSUnableToGetFileTypeException;
 import com.tvdash.backend.exceptions.MSUnableToPutObjectException;
-import com.tvdash.backend.exceptions.MSUnknownException;
 import com.tvdash.backend.exceptions.MSUnsupportedMediaException;
 
 import io.minio.GetObjectArgs;
@@ -35,7 +34,7 @@ public class MinioService {
     @Value("${minio.bucket}")
     private String bucket;
 
-    public String insertImage(InputStream image, long fileSize) throws MSUnableToGetFileTypeException, MSUnsupportedMediaException, MSUnknownException, MSUnableToPutObjectException {
+    public String insertImage(InputStream image, long fileSize) throws MSUnableToGetFileTypeException, MSUnsupportedMediaException, MSUnableToPutObjectException {
         String contentType;
 
         try {
