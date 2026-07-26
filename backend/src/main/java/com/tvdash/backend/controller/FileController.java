@@ -6,21 +6,29 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tvdash.backend.services.MinioService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/file")
+@CrossOrigin(origins = "*")
 public class FileController {
 
     private final MinioService minioService;
 
-    @GetMapping("/stream/{fileName}")
-    public ResponseEntity<InputStreamResource> streamImage(@PathVariable String fileName) throws Exception {
+    @GetMapping("/{fileName}")
+    public ResponseEntity<InputStreamResource> streamImage(@PathVariable String fileName) {
         InputStream stream;
+        String type;
 
         try {
             stream = minioService.getImageStream(fileName);
@@ -28,8 +36,12 @@ public class FileController {
             return ResponseEntity.notFound().build();
         }
 
-        String type = minioService.getContentType(fileName);
-
+        try {
+            type = minioService.getContentType(fileName);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+        
         boolean typeCheckPassed = !(type == null && type.isEmpty() && type.isBlank());
 
         if (typeCheckPassed) {
