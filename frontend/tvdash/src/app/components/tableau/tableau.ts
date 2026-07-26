@@ -24,4 +24,12 @@ export class Tableau {
       .getUrlOnlyItems()
       .subscribe((items) => this.urlOnlyItems.set(items));
   }
+
+  protected removeCard(id: string): void {
+    this.cards.set(this.cards().filter((card) => card.id !== id));
+  }
+
+  protected removeUrlOnlyItem(id: string): void {
+    this.urlOnlyItems.set(this.urlOnlyItems().filter((item) => item.id !== id));
+  }
 }

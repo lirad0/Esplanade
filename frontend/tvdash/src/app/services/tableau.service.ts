@@ -32,6 +32,10 @@ export class TableauService {
     return this.http.delete<void>(`${this.baseUrl}/cards/${id}`);
   }
 
+  deleteUrlOnlyItem(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/url-only-items/${id}`);
+  }
+
   getUrlOnlyItems(): Observable<UrlOnlyItem[]> {
     return this.http.get<UrlOnlyItem[]>(`${this.baseUrl}/url-only-items`);
   }
