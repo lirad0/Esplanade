@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 public class FileService {
 
     public String getFileType(InputStream stream) throws IOException {
-        Tika tika = new Tika();
-        // Tika needs a stream that supports mark/reset, or pass bytes directly
-        byte[] bytes = stream.readAllBytes();
+        return getFileType(stream.readAllBytes());
+    }
 
+    public String getFileType(byte[] bytes) throws IOException {
+        Tika tika = new Tika();
         return tika.detect(bytes); // e.g. "image/jpeg"
     }
 

@@ -1,5 +1,6 @@
 package com.tvdash.backend.services;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
@@ -35,10 +36,18 @@ public class MinioService {
     private String bucket;
 
     public String insertImage(InputStream image, long fileSize) throws MSUnableToGetFileTypeException, MSUnsupportedMediaException, MSUnableToPutObjectException {
+        byte[] imageBytes;
+
+        try {
+            imageBytes = image.readAllBytes();
+        } catch (IOException e) {
+            throw new MSUnableToGetFileTypeException();
+        }
+
         String contentType;
 
         try {
-            contentType = fileService.getFileType(image);
+            contentType = fileService.getFileType(imageBytes);
         } catch (IOException e) {
             throw new MSUnableToGetFileTypeException();
         }
@@ -58,13 +67,13 @@ public class MinioService {
                     PutObjectArgs.builder()
                             .bucket(minioProperties.getBucket())
                             .object(imageName)
-                            .stream(image, fileSize, -1)
+                            .stream(new ByteArrayInputStream(imageBytes), imageBytes.length, -1)
                             .contentType(contentType)
                             .build()
             );
         } catch (Exception e) {
             throw new MSUnableToPutObjectException();
-        };
+        }
 
         return imageName;
     }
