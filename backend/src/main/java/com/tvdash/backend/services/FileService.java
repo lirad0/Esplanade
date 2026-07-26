@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.tika.Tika;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FileService {
 
     public String getFileType(InputStream stream) throws IOException {
