@@ -4,14 +4,21 @@ import java.io.InputStream;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.InvalidMediaTypeException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.springframework.http.MediaType;
+import com.tvdash.backend.services.MinioService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class FileController {
-        @GetMapping("/stream/{fileName}")
+
+    private final MinioService minioService;
+
+    @GetMapping("/stream/{fileName}")
     public ResponseEntity<InputStreamResource> streamImage(@PathVariable String fileName) throws Exception {
         InputStream stream;
 
@@ -20,7 +27,7 @@ public class FileController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-        
+
         String type = minioService.getContentType(fileName);
 
         boolean typeCheckPassed = !(type == null && type.isEmpty() && type.isBlank());
@@ -35,8 +42,8 @@ public class FileController {
             }
 
             return ResponseEntity.ok()
-                .contentType(contentType)
-                .body(new InputStreamResource(stream));
+                    .contentType(contentType)
+                    .body(new InputStreamResource(stream));
         }
 
         return ResponseEntity.notFound().build();

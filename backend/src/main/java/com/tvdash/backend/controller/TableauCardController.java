@@ -1,5 +1,25 @@
 package com.tvdash.backend.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.tvdash.backend.exceptions.MSUnableToGetFileTypeException;
+import com.tvdash.backend.exceptions.MSUnableToPutObjectException;
 import com.tvdash.backend.exceptions.MSUnknownException;
 import com.tvdash.backend.exceptions.MSUnsupportedMediaException;
 import com.tvdash.backend.model.TableauCard;
@@ -8,15 +28,6 @@ import com.tvdash.backend.services.MinioService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -45,14 +56,20 @@ public class TableauCardController {
 
         try (InputStream fs = file.getInputStream()) {
             
-            try (String imageName = minioService.insertImage(fs, file.getSize()))  {
-                card.setimageName(imageName);
+            try  {
+                String imageName = minioService.insertImage(fs, file.getSize());
+
+                card.setImageName(imageName);
             } catch (MSUnsupportedMediaException e) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
                     .body("Only PNG, JPG and SVG files are allowed.");
             } catch (MSUnknownException e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to upload file: " + e.getMessage());
+            } catch (MSUnableToGetFileTypeException ex) {
+                System.getLogger(TableauCardController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            } catch (MSUnableToPutObjectException ex) {
+                System.getLogger(TableauCardController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
 
         } catch (IOException e) {
@@ -77,7 +94,7 @@ public class TableauCardController {
         return repository.findById(id)
                 .map(existing -> {
                     existing.setName(card.getName());
-                    existing.setimageName(card.getimageName());
+                    existing.setImageName(card.getImageName());
                     existing.setUrl(card.getUrl());
                     return ResponseEntity.ok(repository.save(existing));
                 })

@@ -1,14 +1,15 @@
 package com.tvdash.backend.seed;
 
-import com.tvdash.backend.model.TableauCard;
-import com.tvdash.backend.model.UrlOnlyItem;
-import com.tvdash.backend.repository.TableauCardRepository;
-import com.tvdash.backend.repository.UrlOnlyItemRepository;
+import java.util.List;
+
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.tvdash.backend.model.TableauCard;
+import com.tvdash.backend.model.UrlOnlyItem;
+import com.tvdash.backend.repository.TableauCardRepository;
+import com.tvdash.backend.repository.UrlOnlyItemRepository;
 
 @Component
 public class DataSeeder implements ApplicationRunner {
@@ -25,12 +26,12 @@ public class DataSeeder implements ApplicationRunner {
         if (tableauCardRepository.count() == 0) {
             TableauCard exampleUrl1 = new TableauCard();
             exampleUrl1.setName("Example Url 1");
-            exampleUrl1.setimageName("img.png");
+            exampleUrl1.setImageName("img.png");
             exampleUrl1.setUrl("https://placehold.co/600x400");
 
             TableauCard exampleUrl2 = new TableauCard();
             exampleUrl2.setName("Example Url 2");
-            exampleUrl2.setimageName("img.svg");
+            exampleUrl2.setImageName("img.svg");
             exampleUrl2.setUrl("https://placehold.co/600x400/000000/FFFFFF.png");
 
             tableauCardRepository.saveAll(List.of(exampleUrl1, exampleUrl2));

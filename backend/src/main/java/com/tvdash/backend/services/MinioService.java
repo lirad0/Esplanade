@@ -1,15 +1,16 @@
 package com.tvdash.backend.services;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tvdash.backend.config.MinioProperties;
+import com.tvdash.backend.exceptions.MSUnableToGetFileTypeException;
+import com.tvdash.backend.exceptions.MSUnableToPutObjectException;
 import com.tvdash.backend.exceptions.MSUnknownException;
 import com.tvdash.backend.exceptions.MSUnsupportedMediaException;
 
@@ -25,8 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class MinioService {
 
     private static Set<String> ALLOWED_CONTENT_TYPES = Set.of(
-        "image/png", "image/svg+xml", "image/jpeg"
-    );
+            "image/png", "image/svg+xml", "image/jpeg");
 
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
@@ -35,18 +35,26 @@ public class MinioService {
     @Value("${minio.bucket}")
     private String bucket;
 
-    public String insertImage(InputStream image, long fileSize) {
-        String contentType = fileService.getFileType(image);
+    public String insertImage(InputStream image, long fileSize) throws MSUnableToGetFileTypeException, MSUnsupportedMediaException, MSUnknownException, MSUnableToPutObjectException {
+        String contentType;
+
+        try {
+            contentType = fileService.getFileType(image);
+        } catch (IOException e) {
+            throw new MSUnableToGetFileTypeException();
+        }
+
         String imageName;
 
         if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
             throw new MSUnsupportedMediaException();
         }
 
-            String extension = resolveExtension(contentType);
+        String extension = resolveExtension(contentType);
 
-            imageName = UUID.randomUUID() + extension;
+        imageName = UUID.randomUUID() + extension;
 
+        try {
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(minioProperties.getBucket())
@@ -55,13 +63,9 @@ public class MinioService {
                             .contentType(contentType)
                             .build()
             );
-                try (InputStream inputStream = file.getInputStream()) {
-
-
-            
         } catch (Exception e) {
-            throw new MSUnknownException();
-        }
+            throw new MSUnableToPutObjectException();
+        };
 
         return imageName;
     }
@@ -87,10 +91,14 @@ public class MinioService {
 
     private String resolveExtension(String contentType) {
         return switch (contentType) {
-            case "image/png" -> ".png";
-            case "image/jpeg" -> ".jpg";
-            case "image/svg+xml" -> ".svg";
-            default -> "";
+            case "image/png" ->
+                ".png";
+            case "image/jpeg" ->
+                ".jpg";
+            case "image/svg+xml" ->
+                ".svg";
+            default ->
+                "";
         };
     }
 }

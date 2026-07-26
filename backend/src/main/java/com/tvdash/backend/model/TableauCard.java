@@ -1,8 +1,9 @@
 package com.tvdash.backend.model;
 
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.validation.constraints.NotBlank;
 
 @Document(collection = "tableau_cards")
 public class TableauCard {
@@ -36,12 +37,8 @@ public class TableauCard {
         this.name = name;
     }
 
-    public String getimageName() {
+    public String getImageName() {
         return imageName;
-    }
-
-    public void setimageName(String imageName) {
-        this.imageName = imageName;
     }
 
     public String getUrl() {
@@ -50,5 +47,9 @@ public class TableauCard {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
