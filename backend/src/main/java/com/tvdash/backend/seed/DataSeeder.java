@@ -6,8 +6,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.tvdash.backend.model.TableauCard;
-import com.tvdash.backend.model.UrlOnlyItem;
+import com.tvdash.backend.model.TableauCardData;
+import com.tvdash.backend.model.UrlOnlyItemData;
 import com.tvdash.backend.repository.TableauCardRepository;
 import com.tvdash.backend.repository.UrlOnlyItemRepository;
 
@@ -24,12 +24,12 @@ public class DataSeeder implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (tableauCardRepository.count() == 0) {
-            TableauCard exampleUrl1 = new TableauCard();
+            TableauCardData exampleUrl1 = new TableauCardData();
             exampleUrl1.setName("Example Url 1");
             exampleUrl1.setImageName("img.png");
             exampleUrl1.setUrl("https://placehold.co/600x400");
 
-            TableauCard exampleUrl2 = new TableauCard();
+            TableauCardData exampleUrl2 = new TableauCardData();
             exampleUrl2.setName("Example Url 2");
             exampleUrl2.setImageName("img.svg");
             exampleUrl2.setUrl("https://placehold.co/600x400/000000/FFFFFF.png");
@@ -38,7 +38,7 @@ public class DataSeeder implements ApplicationRunner {
         }
 
         if (urlOnlyItemRepository.count() == 0) {
-            UrlOnlyItem weatherWidget = new UrlOnlyItem();
+            UrlOnlyItemData weatherWidget = new UrlOnlyItemData();
             weatherWidget.setUrl("https://api.wo-cloud.com/content/widget/?geoObjectKey=10828681&language=it&region=IT&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius");
             urlOnlyItemRepository.save(weatherWidget);
         }

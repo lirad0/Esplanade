@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.tvdash.backend.config.MinioProperties;
-import com.tvdash.backend.model.TableauCard;
+import com.tvdash.backend.model.TableauCardData;
 import com.tvdash.backend.repository.TableauCardRepository;
 
 import io.minio.MinioClient;
@@ -39,12 +39,12 @@ class TableauCardControllerTest {
 
     @Test
     void shouldCreateCard() throws Exception {
-        TableauCard card = new TableauCard();
+        TableauCardData card = new TableauCardData();
         card.setName("Sample");
         card.setImageName("sample.png");
         card.setUrl("https://example.com");
 
-        when(repository.save(any(TableauCard.class))).thenReturn(card);
+        when(repository.save(any(TableauCardData.class))).thenReturn(card);
 
         mockMvc.perform(post("/api/tableau/cards")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -55,14 +55,14 @@ class TableauCardControllerTest {
 
     @Test
     void shouldUploadImageAndSaveTheGeneratedimageName() throws Exception {
-        TableauCard card = new TableauCard();
+        TableauCardData card = new TableauCardData();
         card.setName("Sample");
         card.setImageName("generated-image.png");
         card.setUrl("https://example.com");
 
         when(minioProperties.getBucket()).thenReturn("images");
         doReturn(null).when(minioClient).putObject(any());
-        when(repository.save(any(TableauCard.class))).thenReturn(card);
+        when(repository.save(any(TableauCardData.class))).thenReturn(card);
 
         mockMvc.perform(multipart("/api/tableau/cards")
                         .file(new MockMultipartFile("file", "sample.png", MediaType.IMAGE_PNG_VALUE, "image-data".getBytes(StandardCharsets.UTF_8)))

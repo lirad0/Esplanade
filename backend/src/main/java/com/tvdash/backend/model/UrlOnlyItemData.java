@@ -5,14 +5,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "url_only_items")
-public class UrlOnlyItem {
+public class UrlOnlyItemData {
     @Id
     private String id;
 
     @NotBlank
     private String url;
 
-    public UrlOnlyItem() {
+    public UrlOnlyItemData() {
     }
 
     public String getId() {

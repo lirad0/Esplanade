@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import jakarta.validation.constraints.NotBlank;
 
 @Document(collection = "tableau_cards")
-public class TableauCard {
+public class TableauCardData {
     @Id
     private String id;
 
@@ -18,7 +18,7 @@ public class TableauCard {
     @NotBlank
     private String url;
 
-    public TableauCard() {
+    public TableauCardData() {
     }
 
     public String getId() {

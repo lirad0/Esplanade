@@ -3,6 +3,7 @@ package com.tvdash.backend.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.function.Function;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tvdash.backend.entity.TableauCard;
 import com.tvdash.backend.exceptions.MSUnableToGetFileTypeException;
 import com.tvdash.backend.exceptions.MSUnableToPutObjectException;
 import com.tvdash.backend.exceptions.MSUnsupportedMediaException;
-import com.tvdash.backend.model.TableauCard;
+import com.tvdash.backend.model.TableauCardData;
 import com.tvdash.backend.repository.TableauCardRepository;
 import com.tvdash.backend.services.MinioService;
+import com.tvdash.backend.services.NetworkService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +38,22 @@ import lombok.RequiredArgsConstructor;
 public class TableauCardController {
     private final TableauCardRepository repository;
     private final MinioService minioService;
+    private final NetworkService networkService;
 
     @GetMapping
     public List<TableauCard> findAll() {
-        return repository.findAll();
+        List<TableauCard> ltcs = repository.findAll().stream().map((card) -> { 
+            TableauCard tc = new TableauCard(); 
+            
+            tc.setId(card.getId());
+            tc.setImageUrl("http://" + networkService.getContainerExternalIP() + ":8001/file/" + card.getImageName());
+            tc.setName(card.getName());
+            tc.setUrl(card.getUrl());
+
+            return tc;
+        }).toList();
+
+        return ltcs;
     }
 
     @PostMapping(consumes = "multipart/form-data")
@@ -51,7 +66,7 @@ public class TableauCardController {
             return ResponseEntity.badRequest().body("File is empty.");
         }
 
-        TableauCard card = new TableauCard();
+        TableauCardData card = new TableauCardData();
 
         try (InputStream fs = file.getInputStream()) {
             
@@ -77,14 +92,14 @@ public class TableauCardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TableauCard> findById(@PathVariable String id) {
+    public ResponseEntity<TableauCardData> findById(@PathVariable String id) {
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TableauCard> update(@PathVariable String id, @Valid @RequestBody TableauCard card) {
+    public ResponseEntity<TableauCardData> update(@PathVariable String id, @Valid @RequestBody TableauCardData card) {
         return repository.findById(id)
                 .map(existing -> {
                     existing.setName(card.getName());

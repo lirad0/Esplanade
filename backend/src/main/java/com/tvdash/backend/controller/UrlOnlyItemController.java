@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tvdash.backend.model.UrlOnlyItem;
+import com.tvdash.backend.model.UrlOnlyItemData;
 import com.tvdash.backend.repository.UrlOnlyItemRepository;
 
 import jakarta.validation.Valid;
@@ -30,24 +30,24 @@ public class UrlOnlyItemController {
     }
 
     @GetMapping
-    public List<UrlOnlyItem> findAll() {
+    public List<UrlOnlyItemData> findAll() {
         return repository.findAll();
     }
 
     @PostMapping
-    public UrlOnlyItem create(@Valid @RequestBody UrlOnlyItem item) {
+    public UrlOnlyItemData create(@Valid @RequestBody UrlOnlyItemData item) {
         return repository.save(item);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UrlOnlyItem> findById(@PathVariable String id) {
+    public ResponseEntity<UrlOnlyItemData> findById(@PathVariable String id) {
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UrlOnlyItem> update(@PathVariable String id, @Valid @RequestBody UrlOnlyItem item) {
+    public ResponseEntity<UrlOnlyItemData> update(@PathVariable String id, @Valid @RequestBody UrlOnlyItemData item) {
         return repository.findById(id)
                 .map(existing -> {
                     existing.setUrl(item.getUrl());
@@ -63,6 +63,7 @@ public class UrlOnlyItemController {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
