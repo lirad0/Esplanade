@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.kartagalaxy.backend.config.MinioProperties;
+import com.kartagalaxy.backend.controller.TableauCardController;
 import com.kartagalaxy.backend.model.TableauCardData;
 import com.kartagalaxy.backend.repository.TableauCardRepository;
 

@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
 import com.kartagalaxy.backend.config.MinioProperties;
+import com.kartagalaxy.backend.services.FileService;
+import com.kartagalaxy.backend.services.MinioService;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
