@@ -1,22 +1,22 @@
 services:
-  tvdash-backend:
+  KartaGalaxy-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: tvdash-backend
+    container_name: KartaGalaxy-backend
     environment:
       SERVER_PORT: 8080
       DEBUG: ${DEBUG:-false}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
-      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/tvdash?authSource=admin}
+      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/KartaGalaxy?authSource=admin}
       MONGODB_DEV_URI: ${MONGODB_DEV_URI}
       MONGODB_PROD_URI: ${MONGODB_PROD_URI}
     ports:
       - "8001:8080"
       - "5006:5005"
     networks:
-      - tvdash-network
+      - KartaGalaxy-network
 
 networks:
-  tvdash-network:
+  KartaGalaxy-network:
     external: true

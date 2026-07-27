@@ -10,10 +10,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.tvdash</groupId>
-    <artifactId>tvdash-backend</artifactId>
+    <groupId>com.KartaGalaxy</groupId>
+    <artifactId>KartaGalaxy-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tvdash-backend</name>
+    <name>KartaGalaxy-backend</name>
     <description>Spring Boot CRUD backend for the TV dashboard tableau cards and URL-only entries</description>
 
     <properties>

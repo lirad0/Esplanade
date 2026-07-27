@@ -8,13 +8,13 @@ spring:
       on-profile: local
   data:
     mongodb:
-      uri: ${MONGODB_LOCAL_URI:mongodb://root:verysecretlocalpassword@mongodb:27017/tvdash?authSource=admin}
+      uri: ${MONGODB_LOCAL_URI:mongodb://root:verysecretlocalpassword@mongodb:27017/KartaGalaxy?authSource=admin}
 minio:
   endpoint: ${MINIO_LOCAL_ENDPOINT:minio-server-local}
   port: ${MINIO_LOCAL_PORT:9000}
   access-key: ${MINIO_ACCESS_KEY:root}
   secret-key: ${MINIO_SECRET_KEY:verysecretlocalpassword}
-  bucket: ${MINIO_BUCKET:tvdash}
+  bucket: ${MINIO_BUCKET:KartaGalaxy}
   secure: ${MINIO_SECURE:false}
 
 ---
@@ -24,13 +24,13 @@ spring:
       on-profile: dev
   data:
     mongodb:
-      uri: ${MONGODB_DEV_URI:mongodb://localhost:27016/tvdash}
+      uri: ${MONGODB_DEV_URI:mongodb://localhost:27016/KartaGalaxy}
 minio:
   endpoint: ${MINIO_LOCAL_ENDPOINT:localhost}
   port: ${MINIO_LOCAL_PORT:9002}
   access-key: ${MINIO_ACCESS_KEY:neverdiscloseyoursecretsinconfigfiles}
   secret-key: ${MINIO_SECRET_KEY:neverdiscloseyoursecretsinconfigfiles}
-  bucket: ${MINIO_BUCKET:tvdash}
+  bucket: ${MINIO_BUCKET:KartaGalaxy}
   secure: ${MINIO_SECURE:false}
 
 ---
@@ -40,11 +40,11 @@ spring:
       on-profile: prod
   data:
     mongodb:
-      uri: ${MONGODB_PROD_URI:mongodb://localhost:27017/tvdash}
+      uri: ${MONGODB_PROD_URI:mongodb://localhost:27017/KartaGalaxy}
 minio:
   endpoint: ${MINIO_LOCAL_ENDPOINT:localhost}
   port: ${MINIO_LOCAL_PORT:9000}
   access-key: ${MINIO_ACCESS_KEY:neverdiscloseyoursecretsinconfigfiles}
   secret-key: ${MINIO_SECRET_KEY:neverdiscloseyoursecretsinconfigfiles}
-  bucket: ${MINIO_BUCKET:tvdash}
+  bucket: ${MINIO_BUCKET:KartaGalaxy}
   secure: ${MINIO_SECURE:true}
