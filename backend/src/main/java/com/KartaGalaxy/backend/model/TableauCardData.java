@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.model;
+package com.kartagalaxy.backend.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

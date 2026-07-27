@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: IndigoAura,
         options: {
-          darkModeSelector: ".KartaGalaxy-dark-theme", // Enables toggle via class (or use false for static dark mode)
+          darkModeSelector: ".kartagalaxy-dark-theme", // Enables toggle via class (or use false for static dark mode)
           cssLayer: {
             name: 'primeng',
             order: 'theme, base, primeng'

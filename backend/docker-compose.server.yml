@@ -1,22 +1,22 @@
 services:
-  KartaGalaxy-backend:
+  kartagalaxy-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: KartaGalaxy-backend
+    container_name: kartagalaxy-backend
     environment:
       SERVER_PORT: 8080
       DEBUG: ${DEBUG:-false}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
-      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/KartaGalaxy?authSource=admin}
+      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/kartagalaxy?authSource=admin}
       MONGODB_DEV_URI: ${MONGODB_DEV_URI}
       MONGODB_PROD_URI: ${MONGODB_PROD_URI}
     ports:
       - "8001:8080"
       - "5006:5005"
     networks:
-      - KartaGalaxy-network
+      - kartagalaxy-network
 
 networks:
-  KartaGalaxy-network:
-    external: true
+  kartagalaxy-network:
+    name: kartagalaxy-network

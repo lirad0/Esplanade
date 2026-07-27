@@ -1,4 +1,4 @@
-// Base URL of the KartaGalaxy backend REST API.
+// Base URL of the kartagalaxy backend REST API.
 // The backend allows CORS from any origin (see WebConfig.java), so the
 // frontend talks to it directly rather than through a same-origin proxy.
 // TODO: move this to a proper Angular environment file (environment.ts /

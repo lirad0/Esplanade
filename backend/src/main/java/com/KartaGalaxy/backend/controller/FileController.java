@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.controller;
+package com.kartagalaxy.backend.controller;
 
 import java.io.InputStream;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.KartaGalaxy.backend.services.MinioService;
+import com.kartagalaxy.backend.services.MinioService;
 
 import lombok.RequiredArgsConstructor;
 

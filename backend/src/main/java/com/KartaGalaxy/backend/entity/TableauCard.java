@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.entity;
+package com.kartagalaxy.backend.entity;
 
 import org.springframework.data.annotation.Id;
 

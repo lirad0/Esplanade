@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.services;
+package com.kartagalaxy.backend.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.KartaGalaxy.backend.config.MinioProperties;
-import com.KartaGalaxy.backend.exceptions.MSUnableToGetFileTypeException;
-import com.KartaGalaxy.backend.exceptions.MSUnableToPutObjectException;
-import com.KartaGalaxy.backend.exceptions.MSUnsupportedMediaException;
+import com.kartagalaxy.backend.config.MinioProperties;
+import com.kartagalaxy.backend.exceptions.MSUnableToGetFileTypeException;
+import com.kartagalaxy.backend.exceptions.MSUnableToPutObjectException;
+import com.kartagalaxy.backend.exceptions.MSUnsupportedMediaException;
 
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;

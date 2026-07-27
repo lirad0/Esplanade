@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.controller;
+package com.kartagalaxy.backend.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.KartaGalaxy.backend.entity.TableauCard;
-import com.KartaGalaxy.backend.exceptions.MSUnableToGetFileTypeException;
-import com.KartaGalaxy.backend.exceptions.MSUnableToPutObjectException;
-import com.KartaGalaxy.backend.exceptions.MSUnsupportedMediaException;
-import com.KartaGalaxy.backend.model.TableauCardData;
-import com.KartaGalaxy.backend.repository.TableauCardRepository;
-import com.KartaGalaxy.backend.services.MinioService;
-import com.KartaGalaxy.backend.services.NetworkService;
+import com.kartagalaxy.backend.entity.TableauCard;
+import com.kartagalaxy.backend.exceptions.MSUnableToGetFileTypeException;
+import com.kartagalaxy.backend.exceptions.MSUnableToPutObjectException;
+import com.kartagalaxy.backend.exceptions.MSUnsupportedMediaException;
+import com.kartagalaxy.backend.model.TableauCardData;
+import com.kartagalaxy.backend.repository.TableauCardRepository;
+import com.kartagalaxy.backend.services.MinioService;
+import com.kartagalaxy.backend.services.NetworkService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

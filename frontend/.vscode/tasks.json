@@ -6,7 +6,7 @@
       "type": "npm",
       "script": "start",
       "label": "npm: start",
-      "path": "KartaGalaxy",
+      "path": "kartagalaxy",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",
@@ -26,7 +26,7 @@
       "type": "npm",
       "script": "test",
       "label": "npm: test",
-      "path": "KartaGalaxy",
+      "path": "kartagalaxy",
       "isBackground": true,
       "problemMatcher": {
         "owner": "typescript",

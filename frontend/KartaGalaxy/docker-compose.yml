@@ -1,5 +1,5 @@
 services:
-  KartaGalaxy-frontend-angular:
+  kartagalaxy-frontend-angular:
     build:
       context: .
       dockerfile: Dockerfile

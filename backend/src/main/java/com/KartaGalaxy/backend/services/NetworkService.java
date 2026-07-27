@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.services;
+package com.kartagalaxy.backend.services;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

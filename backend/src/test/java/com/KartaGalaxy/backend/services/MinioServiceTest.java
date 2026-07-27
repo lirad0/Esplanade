@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.services;
+package com.kartagalaxy.backend.services;
 
 import java.io.ByteArrayInputStream;
 
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
-import com.KartaGalaxy.backend.config.MinioProperties;
+import com.kartagalaxy.backend.config.MinioProperties;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;

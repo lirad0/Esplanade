@@ -1,6 +1,6 @@
-package com.KartaGalaxy.backend.repository;
+package com.kartagalaxy.backend.repository;
 
-import com.KartaGalaxy.backend.model.TableauCardData;
+import com.kartagalaxy.backend.model.TableauCardData;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface TableauCardRepository extends MongoRepository<TableauCardData, String> {

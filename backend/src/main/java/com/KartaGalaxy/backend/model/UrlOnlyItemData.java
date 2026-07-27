@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.model;
+package com.kartagalaxy.backend.model;
 
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;

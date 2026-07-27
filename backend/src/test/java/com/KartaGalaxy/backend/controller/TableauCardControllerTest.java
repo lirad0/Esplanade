@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.controller;
+package com.kartagalaxy.backend.controller;
 
 import java.nio.charset.StandardCharsets;
 
@@ -17,9 +17,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.KartaGalaxy.backend.config.MinioProperties;
-import com.KartaGalaxy.backend.model.TableauCardData;
-import com.KartaGalaxy.backend.repository.TableauCardRepository;
+import com.kartagalaxy.backend.config.MinioProperties;
+import com.kartagalaxy.backend.model.TableauCardData;
+import com.kartagalaxy.backend.repository.TableauCardRepository;
 
 import io.minio.MinioClient;
 

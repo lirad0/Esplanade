@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.controller;
+package com.kartagalaxy.backend.controller;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.KartaGalaxy.backend.model.UrlOnlyItemData;
-import com.KartaGalaxy.backend.repository.UrlOnlyItemRepository;
+import com.kartagalaxy.backend.model.UrlOnlyItemData;
+import com.kartagalaxy.backend.repository.UrlOnlyItemRepository;
 
 import jakarta.validation.Valid;
 

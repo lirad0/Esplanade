@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.seed;
+package com.kartagalaxy.backend.seed;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import com.KartaGalaxy.backend.model.TableauCardData;
-import com.KartaGalaxy.backend.model.UrlOnlyItemData;
-import com.KartaGalaxy.backend.repository.TableauCardRepository;
-import com.KartaGalaxy.backend.repository.UrlOnlyItemRepository;
+import com.kartagalaxy.backend.model.TableauCardData;
+import com.kartagalaxy.backend.model.UrlOnlyItemData;
+import com.kartagalaxy.backend.repository.TableauCardRepository;
+import com.kartagalaxy.backend.repository.UrlOnlyItemRepository;
 
 @Component
 public class DataSeeder implements ApplicationRunner {

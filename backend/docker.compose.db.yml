@@ -1,7 +1,7 @@
 services:
   mongodb:
     image: mongodb/mongodb-enterprise-server:8.0.26-ubi9-slim
-    container_name: KartaGalaxy-mongodb
+    container_name: kartagalaxy-mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=verysecretlocalpassword
@@ -10,11 +10,11 @@ services:
     volumes:
       - mongodb-data:/data/db
     networks:
-      - KartaGalaxy-network
+      - kartagalaxy-network
 
 volumes:
   mongodb-data:
 
 networks:
-  KartaGalaxy-network:
-    name: KartaGalaxy-network
+  kartagalaxy-network:
+    external: true

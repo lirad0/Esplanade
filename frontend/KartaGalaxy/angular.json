@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "KartaGalaxy": {
+    "kartagalaxy": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "KartaGalaxy:build:production"
+              "buildTarget": "kartagalaxy:build:production"
             },
             "development": {
-              "buildTarget": "KartaGalaxy:build:development"
+              "buildTarget": "kartagalaxy:build:development"
             }
           },
           "options": {

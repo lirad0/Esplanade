@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.services;
+package com.kartagalaxy.backend.services;
 
 import java.io.IOException;
 import java.io.InputStream;

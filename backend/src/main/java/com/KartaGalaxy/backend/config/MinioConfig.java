@@ -1,4 +1,4 @@
-package com.KartaGalaxy.backend.config;
+package com.kartagalaxy.backend.config;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
