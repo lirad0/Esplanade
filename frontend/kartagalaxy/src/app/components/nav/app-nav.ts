@@ -51,20 +51,20 @@ export class AppNav implements OnInit {
 			file: [null]
 		});
 
-		this.notificationService
-			.on<ActionPayload>('tableau::edit')
+		this.#notificationService
+			.on<TableauCard>('tableau::edit')
 			.subscribe(data => {
 				this.form.setValue({
 					id: data.id,
 					name: data.name,
 					url: data.url,
-					imgUrl: data.imgUrl
+					file: null
 				});
-			});
-	}
 
-	ngOnDestroy() {
-		this.sub.unsubscribe();
+				this.imageDataUrl.set(data.imageUrl)
+
+				this.open();
+			});
 	}
 
 	onFileChange(event: Event) {
@@ -140,6 +140,15 @@ export class AppNav implements OnInit {
 
 	close() {
 		this.visible = false;
+
+		this.form.setValue({
+			id: [''],
+			name: [''],
+			url: [null],
+			file: [null]
+		})
+
+		this.imageDataUrl.set('');
 	}
 
 	customize() { this.#router.navigateByUrl('/edit'); }

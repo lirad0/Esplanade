@@ -5,6 +5,8 @@ import { TableauService } from "../../services/tableau.service";
 import { TableauCard } from "../../models/tableau-card";
 import { UrlOnlyItem } from "../../models/url-only-item";
 import { NotificationService } from "../../services/notification.service";
+import { take } from "rxjs/internal/operators/take";
+import { Card } from "../types/card";
 
 @Component({
   imports: [GenericCard, WeatherCard],
@@ -24,9 +26,6 @@ export class Tableau {
 
   constructor() {
     this.tableauService.getCards().subscribe((cards) => this.cards.set(cards));
-    this.tableauService
-      .getUrlOnlyItems()
-      .subscribe((items) => this.urlOnlyItems.set(items));
   }
 
   protected removeCard(id: string): void {
@@ -93,6 +92,10 @@ export class Tableau {
       return;
     }
 
-    this.notificationService.sendNotification('tableau::edit', { id: selectedId, name: 'test' });
+    this.tableauService.getCardFromCache(selectedId).pipe(take(1)).subscribe((card) => {
+      if (card) {
+        this.notificationService.sendNotification('tableau::edit', { id: selectedId, name: card.name, url: card.url, imageUrl: card.imageUrl });
+      }
+    }); 
   }
 }
