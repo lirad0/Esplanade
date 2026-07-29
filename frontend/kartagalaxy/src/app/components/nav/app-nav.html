@@ -50,6 +50,8 @@
 	</div>
 
 	<form (ngSubmit)="save()" [formGroup]="form" enctype="multipart/form-data" class="s-in-panel__f space-y-5 p-4">
+		<input type="hidden" formControlName="id" />
+
 		<div>
 			<label for="name" class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Name</label>
 			<input formControlName="name" type="text" id="name" name="name" class="w-full rounded-xl border border-neutral-primary-soft/30 bg-neutral-900/90 px-3 py-2 text-white placeholder:text-neutral-primary-soft focus:border-neutral-primary focus:ring-2 focus:ring-neutral-primary/20 outline-none" placeholder="Name" />

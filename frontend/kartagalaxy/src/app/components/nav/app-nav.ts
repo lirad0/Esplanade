@@ -7,6 +7,8 @@ import { TableauService } from '../../services/tableau.service';
 import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableauCard } from '../../models/tableau-card';
+import { NotificationService } from '../../services/notification.service';
+import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
 	selector: 'app-nav',
@@ -27,6 +29,7 @@ export class AppNav implements OnInit {
 	@Output() deleteClick = new EventEmitter<void>();
 	@Output() editClick = new EventEmitter<void>();
 
+	#notificationService: NotificationService = inject(NotificationService);
 	#mediaService = inject(MediaQueryService);
 	#tableauService = inject(TableauService);
 	#router = inject(Router);
@@ -42,10 +45,26 @@ export class AppNav implements OnInit {
 
 	ngOnInit() {
 		this.form = this.fb.group({
+			id: [''],
 			name: [''],
 			url: [null],
 			file: [null]
-		})
+		});
+
+		this.notificationService
+			.on<ActionPayload>('tableau::edit')
+			.subscribe(data => {
+				this.form.setValue({
+					id: data.id,
+					name: data.name,
+					url: data.url,
+					imgUrl: data.imgUrl
+				});
+			});
+	}
+
+	ngOnDestroy() {
+		this.sub.unsubscribe();
 	}
 
 	onFileChange(event: Event) {
@@ -83,7 +102,6 @@ export class AppNav implements OnInit {
 	}
 
 	save() {
-		// implement saving behavior as needed; currently closes the sidebar
 		const formData = new FormData();
 
 		Object.keys(
@@ -92,7 +110,7 @@ export class AppNav implements OnInit {
 			.forEach(
 				formControlName => {
 					const control = this.form.get(formControlName);
-					
+
 					let val;
 
 					if (control?.value) {
@@ -100,7 +118,7 @@ export class AppNav implements OnInit {
 					} else {
 						val = '';
 					}
-					
+
 					formData.append(
 						formControlName,
 						val

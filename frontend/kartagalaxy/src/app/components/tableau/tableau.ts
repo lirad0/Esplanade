@@ -4,6 +4,7 @@ import { WeatherCard } from "../weather-card/weather-card";
 import { TableauService } from "../../services/tableau.service";
 import { TableauCard } from "../../models/tableau-card";
 import { UrlOnlyItem } from "../../models/url-only-item";
+import { NotificationService } from "../../services/notification.service";
 
 @Component({
   imports: [GenericCard, WeatherCard],
@@ -15,6 +16,7 @@ export class Tableau {
   @Output() selectionChange = new EventEmitter<{ count: number; selectedId: string | null }>();
 
   private readonly tableauService = inject(TableauService);
+  private readonly notificationService = inject(NotificationService);
 
   protected readonly cards = signal<TableauCard[]>([]);
   protected readonly urlOnlyItems = signal<UrlOnlyItem[]>([]);
@@ -91,6 +93,6 @@ export class Tableau {
       return;
     }
 
-    console.info('Edit selected item', selectedId);
+    this.notificationService.sendNotification('tableau::edit', { id: selectedId, name: 'test' });
   }
 }
