@@ -27,11 +27,14 @@ public class MinioConfig {
     @Bean
     public Object ensureBucketExists(MinioClient minioClient) throws Exception {
         boolean exists = minioClient.bucketExists(
-                BucketExistsArgs.builder().bucket(minioProperties.getBucket()).build());
+                BucketExistsArgs.builder().bucket(minioProperties.getBucket()).build()
+        );
+        
         if (!exists) {
             minioClient.makeBucket(
                     MakeBucketArgs.builder().bucket(minioProperties.getBucket()).build());
         }
+
         return new Object();
     }
 }
