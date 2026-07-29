@@ -19,7 +19,13 @@ export class AppNav implements OnInit {
 	@Input() showCustomizeButton = true;
 	@Input() showBackButton = false;
 	@Input() showAddButton = false;
+	@Input() showDeleteButton = false;
+	@Input() deleteButtonVisible = false;
+	@Input() showEditButton = false;
+	@Input() editButtonVisible = false;
 	@Output() backClick = new EventEmitter<void>();
+	@Output() deleteClick = new EventEmitter<void>();
+	@Output() editClick = new EventEmitter<void>();
 
 	#mediaService = inject(MediaQueryService);
 	#tableauService = inject(TableauService);
@@ -123,5 +129,13 @@ export class AppNav implements OnInit {
 	back(event: Event) {
 		this.visible = false;
 		this.backClick.emit();
+	}
+
+	delete() {
+		this.deleteClick.emit();
+	}
+
+	edit() {
+		this.editClick.emit();
 	}
 }

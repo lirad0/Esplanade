@@ -1,8 +1,20 @@
 <main class="main flex flex-row min-h-screen bg-neutral-950">
   <div class="w-16">
-    <app-nav [showCustomizeButton]="false" [showBackButton]="true" [showAddButton]="true" (backClick)="back()" #drawer></app-nav>
+    <app-nav
+      [showCustomizeButton]="false"
+      [showBackButton]="true"
+      [showAddButton]="true"
+      [showDeleteButton]="true"
+      [deleteButtonVisible]="selectedItemCount > 0"
+      [showEditButton]="true"
+      [editButtonVisible]="selectedItemCount === 1"
+      (backClick)="back()"
+      (deleteClick)="deleteSelected()"
+      (editClick)="editSelected()"
+      #drawer
+    ></app-nav>
   </div>
   <div class="content flex-1 p-4">
-    <tableau [editMode]="true"></tableau>
+    <tableau [editMode]="true" (selectionChange)="onSelectionChange($event)" #tableau></tableau>
   </div>
 </main>

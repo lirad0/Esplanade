@@ -1,21 +1,37 @@
 <nav class="h-full min-h-screen w-full bg-neutral-primary text-white flex flex-col items-center py-4">
-	@if (showBackButton) {
-		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="back($event)" aria-label="Back">
-			<img src="/ui/back.svg" alt="Back" />
-		</button>
-	}
+	<div class="flex flex-col items-center gap-2">
+		@if (showBackButton) {
+			<button pButton type="button" class="p-button-rounded p-button-text" (click)="back($event)" aria-label="Back">
+				<img src="/ui/back.svg" alt="Back" />
+			</button>
+		}
 
-	@if (showCustomizeButton) {
-		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="customize()" aria-label="Edit">
-			<img src="/ui/customize.svg" alt="Edit" />
-		</button>
-	}
+		@if (showCustomizeButton) {
+			<button pButton type="button" class="p-button-rounded p-button-text" (click)="customize()" aria-label="Edit">
+				<img src="/ui/customize.svg" alt="Edit" />
+			</button>
+		}
 
-	@if (showAddButton) {
-		<button pButton type="button" class="p-button-rounded p-button-text mb-4" (click)="open()" aria-label="Add">
-			<img src="/ui/add.svg" alt="Add" />
-		</button>
-	}
+		@if (showAddButton) {
+			<button pButton type="button" class="p-button-rounded p-button-text" (click)="open()" aria-label="Add">
+				<img src="/ui/add.svg" alt="Add" />
+			</button>
+		}
+	</div>
+
+	<div class="mt-auto flex flex-col items-center gap-2">
+		@if (showEditButton && editButtonVisible) {
+			<button pButton type="button" class="p-button-rounded p-button-text" (click)="edit()" aria-label="Edit selection">
+				<img src="/ui/edit.svg" alt="Edit" />
+			</button>
+		}
+
+		@if (showDeleteButton && deleteButtonVisible) {
+			<button pButton type="button" class="p-button-rounded p-button-text bg-red-600 hover:bg-red-500" (click)="delete()" aria-label="Delete selection">
+				<img src="/ui/delete.svg" alt="Delete" />
+			</button>
+		}
+	</div>
 </nav>
 
 <!-- Backdrop -->

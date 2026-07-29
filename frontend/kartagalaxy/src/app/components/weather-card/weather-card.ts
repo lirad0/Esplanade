@@ -11,7 +11,9 @@ export class WeatherCard {
     @Input('data-id') dataId = '';
     @Input() url = '';
     @Input() editMode = false;
+    @Input() selected = false;
     @Output() deleted = new EventEmitter<void>();
+    @Output() selectionChange = new EventEmitter<void>();
 
     private readonly tableauService = inject(TableauService);
     constructor(private sanitizer: DomSanitizer) {}
@@ -29,5 +31,15 @@ export class WeatherCard {
             next: () => this.deleted.emit(),
             error: (error) => console.error('Failed to delete weather item', error),
         });
+    }
+
+    handleSelectionClick(event: MouseEvent): void {
+        event.stopPropagation();
+
+        if (!this.editMode) {
+            return;
+        }
+
+        this.selectionChange.emit();
     }
 }

@@ -18,18 +18,6 @@
       <ng-template #title>
         <span class="flex justify-center mt-2 mb-2">{{ name }}</span>
       </ng-template>
-      <ng-template pTemplate="footer">
-        <div class="flex items-center justify-between gap-2 px-4 pb-3">
-          <button type="button" class="flex items-center gap-2 rounded-xl bg-red-600 px-3 py-2 text-white" (click)="handleDelete()">
-            <img src="ui/delete.svg" alt="Delete" class="h-4 w-4" />
-            Delete
-          </button>
-          <button type="button" class="flex items-center gap-2 rounded-xl bg-neutral-800 px-3 py-2 text-white">
-            Edit
-            <img src="ui/edit.svg" alt="Edit" class="h-4 w-4" />
-          </button>
-        </div>
-      </ng-template>
     </p-card>
   }
 </div>

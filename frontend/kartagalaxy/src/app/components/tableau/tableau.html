@@ -1,15 +1,24 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     @for (card of cards(); track card.id) {
-        <generic-card
-            [name]="card.name"
-            [img]="card.imageUrl ? card.imageUrl : ''"
-            [url]="card.url"
-            [data-id]="card.id"
-            [editMode]="editMode"
-            (deleted)="removeCard(card.id)"
-        ></generic-card>
+        <div class="cursor-pointer transition-all" [class.p-2]="isSelected(card.id)" [class.rounded-xl]="isSelected(card.id)" (click)="toggleSelection(card.id)">
+            <generic-card
+                [name]="card.name"
+                [img]="card.imageUrl ? card.imageUrl : ''"
+                [url]="card.url"
+                [data-id]="card.id"
+                [editMode]="editMode"
+            ></generic-card>
+        </div>
     }
     @for (item of urlOnlyItems(); track item.id) {
-        <weather-card [url]="item.url" [data-id]="item.id" [editMode]="editMode" (deleted)="removeUrlOnlyItem(item.id)"></weather-card>
+        <div class="cursor-pointer transition-all" [class.p-2]="isSelected(item.id)" [class.rounded-xl]="isSelected(item.id)" (click)="toggleSelection(item.id)">
+            <weather-card
+                [url]="item.url"
+                [data-id]="item.id"
+                [editMode]="editMode"
+                [selected]="isSelected(item.id)"
+                (selectionChange)="toggleSelection(item.id)"
+            ></weather-card>
+        </div>
     }
 </div>
