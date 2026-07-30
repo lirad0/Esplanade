@@ -31,7 +31,9 @@ export class TableauService {
     return this.cardsCache$.pipe(map((cache) => Array.from(cache.values())));
   }
 
-  saveCard(formData: FormData, id: string = ''): Observable<TableauCard> {
+  saveCard(formData: FormData): Observable<TableauCard> {
+    const id = formData.get("id");
+
     const request$ = id
       ? this.http.put<TableauCard>(`${this.baseUrl}/cards/${id}`, formData)
       : this.http.post<TableauCard>(`${this.baseUrl}/cards`, formData);

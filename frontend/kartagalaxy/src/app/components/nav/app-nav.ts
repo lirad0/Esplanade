@@ -132,8 +132,7 @@ export class AppNav implements OnInit {
 			)
 
 		this.#tableauService.saveCard(
-			formData,
-			''
+			formData
 		).subscribe(
 			(v) => console.info(v)
 		)

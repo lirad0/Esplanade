@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.kartagalaxy.backend.config.MinioProperties;
+import com.kartagalaxy.backend.exceptions.MSUnableToDeleteException;
 import com.kartagalaxy.backend.exceptions.MSUnableToGetFileTypeException;
 import com.kartagalaxy.backend.exceptions.MSUnableToPutObjectException;
 import com.kartagalaxy.backend.exceptions.MSUnsupportedMediaException;
@@ -17,6 +18,7 @@ import com.kartagalaxy.backend.exceptions.MSUnsupportedMediaException;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.StatObjectArgs;
 import io.minio.StatObjectResponse;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +78,19 @@ public class MinioService {
         }
 
         return imageName;
+    }
+
+    public void deleteImage(String imageName) throws MSUnableToDeleteException {
+        try {
+            minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                            .bucket(bucket)
+                            .object(imageName)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new MSUnableToDeleteException();
+        }
     }
 
     // Streaming the image piece by piece

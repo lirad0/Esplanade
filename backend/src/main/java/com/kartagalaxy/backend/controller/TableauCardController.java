@@ -3,7 +3,7 @@ package com.kartagalaxy.backend.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kartagalaxy.backend.entity.TableauCard;
+import com.kartagalaxy.backend.exceptions.MSUnableToDeleteException;
 import com.kartagalaxy.backend.exceptions.MSUnableToGetFileTypeException;
 import com.kartagalaxy.backend.exceptions.MSUnableToPutObjectException;
 import com.kartagalaxy.backend.exceptions.MSUnsupportedMediaException;
@@ -28,7 +28,6 @@ import com.kartagalaxy.backend.repository.TableauCardRepository;
 import com.kartagalaxy.backend.services.MinioService;
 import com.kartagalaxy.backend.services.NetworkService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -42,9 +41,9 @@ public class TableauCardController {
 
     @GetMapping
     public List<TableauCard> findAll() {
-        List<TableauCard> ltcs = repository.findAll().stream().map((card) -> { 
-            TableauCard tc = new TableauCard(); 
-            
+        List<TableauCard> ltcs = repository.findAll().stream().map((card) -> {
+            TableauCard tc = new TableauCard();
+
             tc.setId(card.getId());
             tc.setImageUrl("http://" + networkService.getContainerExternalIP() + ":8001/file/" + card.getImageName());
             tc.setName(card.getName());
@@ -60,8 +59,8 @@ public class TableauCardController {
     public ResponseEntity<?> uploadCardImage(
             @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name,
-            @RequestParam(value = "url", required = false) String url) {
-                
+            @RequestParam("url") String url) {
+
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("File is empty.");
         }
@@ -69,22 +68,22 @@ public class TableauCardController {
         TableauCardData card = new TableauCardData();
 
         try (InputStream fs = file.getInputStream()) {
-            
-            try  {
+            try {
                 String imageName = minioService.insertImage(fs, file.getSize());
 
                 card.setImageName(imageName);
             } catch (MSUnsupportedMediaException e) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-                    .body("Only PNG, JPG and SVG files are allowed.");
+                        .body("Only PNG, JPG and SVG files are allowed.");
             } catch (MSUnableToGetFileTypeException | MSUnableToPutObjectException ex) {
-                System.getLogger(TableauCardController.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                        .body("The file couldn't get processed.");
             }
 
         } catch (IOException e) {
             return ResponseEntity.internalServerError().body("The file has a problem.");
         }
-    
+
         card.setName(name);
         card.setUrl(url);
 
@@ -98,22 +97,69 @@ public class TableauCardController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TableauCardData> update(@PathVariable String id, @Valid @RequestBody TableauCardData card) {
-        return repository.findById(id)
-                .map(existing -> {
-                    existing.setName(card.getName());
-                    existing.setImageName(card.getImageName());
-                    existing.setUrl(card.getUrl());
-                    return ResponseEntity.ok(repository.save(existing));
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> update(@PathVariable String id,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam("name") String name,
+            @RequestParam("url") String url) {
+        Optional<TableauCardData> grabbedRepoItem = repository.findById(id);
+
+        if (file == null || file.isEmpty()) {
+            return grabbedRepoItem
+                    .map(existing -> {
+                        existing.setName(name);
+                        existing.setUrl(url);
+                        return ResponseEntity.ok(repository.save(existing));
+                    })
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } else {
+            String oldImageName = grabbedRepoItem.get().getImageName();
+
+            try {
+                minioService.deleteImage(oldImageName);
+            } catch (MSUnableToDeleteException e) {
+                // we just accept the brutal truth and go on with our life
+            }
+            
+            try (InputStream fs = file.getInputStream()) {
+                try {
+                    String imageName = minioService.insertImage(fs, file.getSize());
+
+                    return grabbedRepoItem
+                            .map(existing -> {
+                                existing.setName(name);
+                                existing.setImageName(imageName);
+                                existing.setUrl(url);
+                                return ResponseEntity.ok(repository.save(existing));
+                            })
+                            .orElseGet(() -> ResponseEntity.notFound().build());
+                } catch (MSUnsupportedMediaException e) {
+                    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                            .body("Only PNG, JPG and SVG files are allowed.");
+                } catch (MSUnableToGetFileTypeException | MSUnableToPutObjectException ex) {
+                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                            .body("The file couldn't get processed.");
+                }
+
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().body("The file has a problem.");
+            }
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
+        }
+
+        Optional<TableauCardData> grabbedRepoItem = repository.findById(id);
+        String imageName = grabbedRepoItem.get().getImageName();
+
+        try {
+            minioService.deleteImage(imageName);
+        } catch (MSUnableToDeleteException e) {
+            // we just accept the brutal truth and go on with our life
         }
 
         repository.deleteById(id);
