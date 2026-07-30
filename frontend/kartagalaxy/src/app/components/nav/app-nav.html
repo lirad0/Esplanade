@@ -64,11 +64,15 @@
 
 		<div class="s-in-panel__f__img-r">
 			<label for="file" class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Image</label>
-			<input formControlName="file" type="file" id="file" name="file" (change)="onFileChange($event)" accept="image/*" class="text-neutral-primary-soft" />
+			<input #fileInput formControlName="file" type="file" id="file" name="file" (change)="onFileChange($event)" accept="image/*" class="text-neutral-primary-soft hidden" />
 			
 			@if (imageDataUrl()) {
 				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
 					<img [src]="imageDataUrl()" alt="preview" class="w-full rounded-lg" />
+				</div>
+			} @else {
+				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
+					<img src="/ui/add_image.svg" (pointerup)="triggerFileInput()" alt="preview" class="w-full rounded-lg" />
 				</div>
 			}
 

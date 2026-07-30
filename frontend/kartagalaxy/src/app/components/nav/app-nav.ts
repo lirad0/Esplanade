@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TableauCard } from '../../models/tableau-card';
 import { NotificationService } from '../../services/notification.service';
-import { Subscription } from 'rxjs/internal/Subscription';
 
 @Component({
 	selector: 'app-nav',
@@ -38,6 +37,8 @@ export class AppNav implements OnInit {
 	imageDataUrl = signal<string | null>(null);
 	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'md'));
 	file: File | null = null;
+
+	@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
 	constructor(public fb: FormBuilder) { };
 
@@ -83,6 +84,10 @@ export class AppNav implements OnInit {
 			this.imageDataUrl.set(null);
 		}
 
+	}
+
+	triggerFileInput() {
+		this.fileInput.nativeElement.click();
 	}
 
 	getSidebarTransition(visible: boolean) {
