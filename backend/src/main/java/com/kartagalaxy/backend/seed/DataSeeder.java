@@ -7,18 +7,18 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import com.kartagalaxy.backend.model.TableauCardData;
-import com.kartagalaxy.backend.model.UrlOnlyItemData;
+import com.kartagalaxy.backend.model.TableauBitData;
 import com.kartagalaxy.backend.repository.TableauCardRepository;
-import com.kartagalaxy.backend.repository.UrlOnlyItemRepository;
+import com.kartagalaxy.backend.repository.TableauBitRepository;
 
 @Component
 public class DataSeeder implements ApplicationRunner {
     private final TableauCardRepository tableauCardRepository;
-    private final UrlOnlyItemRepository urlOnlyItemRepository;
+    private final TableauBitRepository TableauBitRepository;
 
-    public DataSeeder(TableauCardRepository tableauCardRepository, UrlOnlyItemRepository urlOnlyItemRepository) {
+    public DataSeeder(TableauCardRepository tableauCardRepository, TableauBitRepository TableauBitRepository) {
         this.tableauCardRepository = tableauCardRepository;
-        this.urlOnlyItemRepository = urlOnlyItemRepository;
+        this.TableauBitRepository = TableauBitRepository;
     }
 
     @Override
@@ -37,10 +37,10 @@ public class DataSeeder implements ApplicationRunner {
             tableauCardRepository.saveAll(List.of(exampleUrl1, exampleUrl2));
         }
 
-        if (urlOnlyItemRepository.count() == 0) {
-            UrlOnlyItemData weatherWidget = new UrlOnlyItemData();
+        if (TableauBitRepository.count() == 0) {
+            TableauBitData weatherWidget = new TableauBitData();
             weatherWidget.setUrl("https://api.wo-cloud.com/content/widget/?geoObjectKey=10828681&language=it&region=IT&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius");
-            urlOnlyItemRepository.save(weatherWidget);
+            TableauBitRepository.save(weatherWidget);
         }
     }
 }

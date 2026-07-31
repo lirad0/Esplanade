@@ -13,41 +13,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kartagalaxy.backend.model.UrlOnlyItemData;
-import com.kartagalaxy.backend.repository.UrlOnlyItemRepository;
+import com.kartagalaxy.backend.model.TableauBitData;
+import com.kartagalaxy.backend.repository.TableauBitRepository;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/tableau/url-only-items")
+@RequestMapping("/api/tableau/bits")
 @CrossOrigin(origins = "*")
-public class UrlOnlyItemController {
+public class TableauBitController {
 
-    private final UrlOnlyItemRepository repository;
+    private final TableauBitRepository repository;
 
-    public UrlOnlyItemController(UrlOnlyItemRepository repository) {
+    public TableauBitController(TableauBitRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
-    public List<UrlOnlyItemData> findAll() {
+    public List<TableauBitData> findAll() {
         return repository.findAll();
     }
 
     @PostMapping
-    public UrlOnlyItemData create(@Valid @RequestBody UrlOnlyItemData item) {
+    public TableauBitData create(@Valid @RequestBody TableauBitData item) {
         return repository.save(item);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UrlOnlyItemData> findById(@PathVariable String id) {
+    public ResponseEntity<TableauBitData> findById(@PathVariable String id) {
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UrlOnlyItemData> update(@PathVariable String id, @Valid @RequestBody UrlOnlyItemData item) {
+    public ResponseEntity<TableauBitData> update(@PathVariable String id, @Valid @RequestBody TableauBitData item) {
         return repository.findById(id)
                 .map(existing -> {
                     existing.setUrl(item.getUrl());

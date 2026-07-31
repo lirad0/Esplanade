@@ -1,18 +1,19 @@
 package com.kartagalaxy.backend.model;
 
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "url_only_items")
-public class UrlOnlyItemData {
+import jakarta.validation.constraints.NotBlank;
+
+@Document(collection = "tableau_bits")
+public class TableauBitData {
     @Id
     private String id;
 
     @NotBlank
     private String url;
 
-    public UrlOnlyItemData() {
+    public TableauBitData() {
     }
 
     public String getId() {
