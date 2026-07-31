@@ -5,6 +5,7 @@ import { ButtonModule } from "primeng/button";
 import { TableauService } from "../../services/tableau.service";
 import { NotificationService } from "../../services/notification.service";
 import { TableauCard } from "../../models/tableau-card";
+import { MenuStage } from "../enums/menu-stage.enum";
 
 @Component({
     selector: 'add-menu',
@@ -13,21 +14,26 @@ import { TableauCard } from "../../models/tableau-card";
     imports: [ReactiveFormsModule, CommonModule, FormsModule, ButtonModule]
 })
 export class AddMenu implements OnInit {
+MenuStage: any;
+
 	@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
     #tableauService = inject(TableauService);
     #notificationService = inject(NotificationService);
 
+    title: String = "Add";
     file: File | null = null;
     imageDataUrl = signal<string | null>(null);
     form!: FormGroup;
+    stage!: MenuStage;
+    MenuStage = MenuStage;
 
     @Output() openSlide = new EventEmitter<void>();
     @Output() closeSlide = new EventEmitter<void>();
 
 	constructor(public fb: FormBuilder) { };
 
-    ngOnInit(): void {
+    ngOnInit(): void {  
         this.form = this.fb.group({
             id: [''],
             name: [''],
@@ -48,6 +54,8 @@ export class AddMenu implements OnInit {
                 this.imageDataUrl.set(data.imageUrl);
 
                 this.#notificationService.sendNotification("appnav::openSlide");
+
+                this.title = "Edit";
 
                 this.openSlide.emit();
             });
@@ -120,5 +128,7 @@ export class AddMenu implements OnInit {
 		})
 
 		this.imageDataUrl.set('');
+
+        this.title = "Add";
     }
 }
