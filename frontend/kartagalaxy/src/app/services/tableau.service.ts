@@ -101,8 +101,8 @@ export class TableauService {
     this.cardsCache$.next(nextCache);
   }
 
-  private replacebitsCache(items: bit[]): void {
-    const nextCache = new Map<string, bit>();
+  private replacebitsCache(items: TableauBit[]): void {
+    const nextCache = new Map<string, TableauBit>();
 
     items.forEach((item) => {
       if (item.id) {
