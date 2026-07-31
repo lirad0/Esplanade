@@ -27,7 +27,7 @@ export class WeatherCard {
             return;
         }
 
-        this.tableauService.deleteUrlOnlyItem(this.dataId).subscribe({
+        this.tableauService.deleteBit(this.dataId).subscribe({
             next: () => this.deleted.emit(),
             error: (error) => console.error('Failed to delete weather item', error),
         });

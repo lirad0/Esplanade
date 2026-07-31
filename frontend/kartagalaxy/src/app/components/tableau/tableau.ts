@@ -3,7 +3,7 @@ import { GenericCard } from "../generic-card/generic-card";
 import { WeatherCard } from "../weather-card/weather-card";
 import { TableauService } from "../../services/tableau.service";
 import { TableauCard } from "../../models/tableau-card";
-import { UrlOnlyItem } from "../../models/url-only-item";
+import { TableauBit } from "../../models/tableau-bit";
 import { NotificationService } from "../../services/notification.service";
 import { take } from "rxjs/internal/operators/take";
 import { Card } from "../types/card";
@@ -21,7 +21,7 @@ export class Tableau {
   private readonly notificationService = inject(NotificationService);
 
   protected readonly cards = signal<TableauCard[]>([]);
-  protected readonly urlOnlyItems = signal<UrlOnlyItem[]>([]);
+  protected readonly bits = signal<TableauBit[]>([]);
   protected readonly selectedItemIds = signal<string[]>([]);
 
   constructor() {
@@ -32,8 +32,8 @@ export class Tableau {
     this.cards.set(this.cards().filter((card) => card.id !== id));
   }
 
-  protected removeUrlOnlyItem(id: string): void {
-    this.urlOnlyItems.set(this.urlOnlyItems().filter((item) => item.id !== id));
+  protected removebit(id: string): void {
+    this.bits.set(this.bits().filter((item) => item.id !== id));
   }
 
   protected isSelected(id: string): boolean {
@@ -75,8 +75,8 @@ export class Tableau {
         return;
       }
 
-      this.tableauService.deleteUrlOnlyItem(id).subscribe({
-        next: () => this.removeUrlOnlyItem(id),
+      this.tableauService.deletebit(id).subscribe({
+        next: () => this.removebit(id),
         error: (error) => console.error('Failed to delete weather item', error),
       });
     });

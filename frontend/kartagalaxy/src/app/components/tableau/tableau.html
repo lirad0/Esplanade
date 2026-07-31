@@ -10,7 +10,7 @@
             ></generic-card>
         </div>
     }
-    @for (item of urlOnlyItems(); track item.id) {
+    @for (item of bits(); track item.id) {
         <div class="cursor-pointer transition-all" [class.p-2]="isSelected(item.id)" [class.rounded-xl]="isSelected(item.id)" (click)="toggleSelection(item.id)">
             <weather-card
                 [url]="item.url"

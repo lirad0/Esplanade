@@ -1,4 +1,4 @@
-export interface UrlOnlyItem {
+export interface TableauBit {
   id: string;
   url: string;
 }

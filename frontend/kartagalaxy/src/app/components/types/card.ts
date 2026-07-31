@@ -1,4 +1,4 @@
 import { TableauCard } from "../../models/tableau-card";
-import { UrlOnlyItem } from "../../models/url-only-item";
+import { TableauBit } from "../../models/tableau-bit";
 
-export type Card = TableauCard | UrlOnlyItem;
+export type Card = TableauCard | TableauBit;
