@@ -32,7 +32,7 @@ export class Tableau {
     this.cards.set(this.cards().filter((card) => card.id !== id));
   }
 
-  protected removebit(id: string): void {
+  protected removeBit(id: string): void {
     this.bits.set(this.bits().filter((item) => item.id !== id));
   }
 
@@ -75,8 +75,8 @@ export class Tableau {
         return;
       }
 
-      this.tableauService.deletebit(id).subscribe({
-        next: () => this.removebit(id),
+      this.tableauService.deleteBit(id).subscribe({
+        next: () => this.removeBit(id),
         error: (error) => console.error('Failed to delete weather item', error),
       });
     });

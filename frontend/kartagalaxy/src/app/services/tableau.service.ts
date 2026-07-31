@@ -52,13 +52,13 @@ export class TableauService {
 
   deleteBit(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/bits/${id}`).pipe(
-      tap(() => this.removebitFromCache(id)),
+      tap(() => this.removeBitFromCache(id)),
     );
   }
 
-  getbits(): Observable<TableauBit[]> {
+  getBits(): Observable<TableauBit[]> {
     return this.http.get<TableauBit[]>(`${this.baseUrl}/bits`).pipe(
-      tap((items) => this.replacebitsCache(items)),
+      tap((items) => this.replaceBitsCache(items)),
     );
   }
 
@@ -101,7 +101,7 @@ export class TableauService {
     this.cardsCache$.next(nextCache);
   }
 
-  private replacebitsCache(items: TableauBit[]): void {
+  private replaceBitsCache(items: TableauBit[]): void {
     const nextCache = new Map<string, TableauBit>();
 
     items.forEach((item) => {
@@ -113,7 +113,7 @@ export class TableauService {
     this.bitsCache$.next(nextCache);
   }
 
-  private removebitFromCache(id: string): void {
+  private removeBitFromCache(id: string): void {
     const nextCache = new Map(this.bitsCache$.value);
     nextCache.delete(id);
     this.bitsCache$.next(nextCache);
