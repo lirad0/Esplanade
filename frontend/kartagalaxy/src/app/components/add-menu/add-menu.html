@@ -1,0 +1,44 @@
+<div>
+    <div class="flex justify-between items-center mb-4 p-4">
+		<h3 class="m-0 text-lg font-semibold text-neutral-primary">Edit</h3>
+		<button pButton type="button" class="p-button-text text-neutral-primary-soft" (click)="triggerCloseSlide()">✕</button>
+	</div>
+
+	<form (ngSubmit)="save()" [formGroup]="form" enctype="multipart/form-data" class="s-in-panel__f space-y-5 p-4">
+		<input type="hidden" formControlName="id" />
+
+		<div>
+			<label for="name" class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Name</label>
+			<input formControlName="name" type="text" id="name" name="name" class="w-full rounded-xl border border-neutral-primary-soft/30 bg-neutral-900/90 px-3 py-2 text-white placeholder:text-neutral-primary-soft focus:border-neutral-primary focus:ring-2 focus:ring-neutral-primary/20 outline-none" placeholder="Name" />
+		</div>
+
+		<div>
+			<label for="url" class="block mb-2 text-sm font-semibold text-neutral-primary-soft">URL</label>
+			<input formControlName="url" type="text" id="url" name="url" class="w-full rounded-xl border border-neutral-primary-soft/30 bg-neutral-900/90 px-3 py-2 text-white placeholder:text-neutral-primary-soft focus:border-neutral-primary focus:ring-2 focus:ring-neutral-primary/20 outline-none" placeholder="URL" />
+		</div>
+
+		<div class="s-in-panel__f__img-r">
+			<label for="file" class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Image</label>
+			<input #fileInput formControlName="file" type="file" id="file" name="file" (change)="onFileChange($event)" accept="image/*" class="text-neutral-primary-soft hidden" />
+			
+			@if (imageDataUrl()) {
+				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
+					<img [src]="imageDataUrl()" alt="preview" class="w-full rounded-lg" />
+				</div>
+			} @else {
+				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
+					<img src="/ui/add_image.svg" (pointerup)="triggerFileInput()" alt="preview" class="w-full rounded-lg" />
+				</div>
+			}
+
+		</div>
+
+		<div class="mt-4 flex justify-end gap-2">
+			<button pButton type="submit" class="p-button">Add item</button>
+		</div>
+	</form>
+
+	<div class="flex justify-center p-4 mt-16">
+		<button pButton type="button" class="p-button-primary colorw-32" (click)="triggerCloseSlide()">Close</button>
+	</div>
+</div>
