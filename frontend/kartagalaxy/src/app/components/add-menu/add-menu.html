@@ -23,7 +23,7 @@
 			
 			@if (imageDataUrl()) {
 				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
-					<img [src]="imageDataUrl()" alt="preview" class="w-full rounded-lg" />
+					<img [src]="imageDataUrl()" (pointerup)="triggerFileInput()" alt="preview" class="w-full rounded-lg" />
 				</div>
 			} @else {
 				<div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
