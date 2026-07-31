@@ -14,7 +14,7 @@ export class TableauService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${API_BASE_URL}/tableau`;
   private readonly cardsCache$ = new BehaviorSubject<Map<string, TableauCard>>(new Map());
-  private readonly bitsCache$ = new BehaviorSubject<Map<string, bit>>(new Map());
+  private readonly bitsCache$ = new BehaviorSubject<Map<string, TableauBit>>(new Map());
 
   getCards(): Observable<TableauCard[]> {
     return this.http.get<TableauCard[]>(`${this.baseUrl}/cards`).pipe(
