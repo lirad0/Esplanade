@@ -5,16 +5,24 @@
             (click)="triggerCloseSlide()">✕</button>
     </div>
 
-    @switch (stage) {
+    @switch (this.stage()) {
         @default {
-            <div class="flex">
-                <img src="/ui/link.svg" class="p-4">
-                <img src="/ui/iframe.svg" class="p-4">
+            <div>
+                <ul class="flex">
+                    <li class="border m-4 p-4" (pointerup)="this.stage.set(MenuStage.LINK)">
+                        <img src="/ui/link.svg" class="w-32">
+                        <h4 class="text-center">Link</h4>
+                    </li>
+                    <li class="border m-4 p-4" (pointerup)="this.stage.set(MenuStage.IFRAME)">
+                        <img src="/ui/iframe.svg" class="w-32">
+                        <h4 class="text-center">Iframe</h4>
+                    </li>
+                </ul>
             </div>
         }
 
         @case (MenuStage.LINK) {
-            <form (ngSubmit)="save()" [formGroup]="form" enctype="multipart/form-data" class="s-in-panel__f space-y-5 p-4">
+            <form (ngSubmit)="saveLinkForm()" [formGroup]="linkFormGroup" enctype="multipart/form-data" class="s-in-panel__f space-y-5 p-4">
                 <input type="hidden" formControlName="id" />
 
                 <div>
@@ -33,12 +41,12 @@
 
                 <div class="s-in-panel__f__img-r">
                     <label for="file" class="block mb-2 text-sm font-semibold text-neutral-primary-soft">Image</label>
-                    <input #fileInput formControlName="file" type="file" id="file" name="file" (change)="onFileChange($event)"
+                    <input #linkFormFileInput formControlName="file" type="file" id="file" name="file" (change)="onFileChange($event)"
                         accept="image/*" class="text-neutral-primary-soft hidden" />
 
-                    @if (imageDataUrl()) {
+                    @if (linkFormImageDataUrl()) {
                     <div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
-                        <img [src]="imageDataUrl()" (pointerup)="triggerFileInput()" alt="preview" class="w-full rounded-lg" />
+                        <img [src]="linkFormImageDataUrl()" (pointerup)="triggerFileInput()" alt="preview" class="w-full rounded-lg" />
                     </div>
                     } @else {
                     <div class="mt-2 rounded-xl border border-neutral-primary-soft/20 bg-neutral-950 p-2 w-32">
@@ -49,13 +57,13 @@
                 </div>
 
                 <div class="mt-4 flex justify-end gap-2">
-                    <button pButton type="submit" class="p-button">{{ title }} item</button>
+                    <button pButton type="submit" class="p-button">Save</button>
                 </div>
             </form>
         }
 
         @case (MenuStage.IFRAME) {
-            <form (ngSubmit)="save()" [formGroup]="form" enctype="multipart/form-data" class="s-in-panel__f space-y-5 p-4">
+            <form (ngSubmit)="saveIframeForm()" [formGroup]="iframeFormGroup" enctype="multipart/form-data" class="s-in-panel__f space-y-5 p-4">
                 <input type="hidden" formControlName="id" />
 
                 <div>
@@ -66,7 +74,7 @@
                 </div>
 
                 <div class="mt-4 flex justify-end gap-2">
-                    <button pButton type="submit" class="p-button">{{ title }} item</button>
+                    <button pButton type="submit" class="p-button">Save</button>
                 </div>
             </form>
         }

@@ -44,6 +44,18 @@ export class TableauService {
     );
   }
 
+  saveBit(formData: FormData): Observable<TableauBit> {
+    const id = formData.get("id");
+
+    const request$ = id
+      ? this.http.put<TableauBit>(`${this.baseUrl}/bits/${id}`, formData)
+      : this.http.post<TableauBit>(`${this.baseUrl}/bits`, formData);
+
+    return request$.pipe(
+      tap((bit) => this.upsertBitInCache(bit)),
+    );
+  }
+
   deleteCard(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/cards/${id}`).pipe(
       tap(() => this.removeCardFromCache(id)),
@@ -92,6 +104,15 @@ export class TableauService {
     if (card.id) {
       nextCache.set(card.id, this.normalizeCard(card));
       this.cardsCache$.next(nextCache);
+    }
+  }
+
+  private upsertBitInCache(bit: TableauBit): void {
+      const nextCache = new Map(this.bitsCache$.value);
+
+    if (bit.id) {
+      nextCache.set(bit.id, bit);
+      this.bitsCache$.next(nextCache);
     }
   }
 
