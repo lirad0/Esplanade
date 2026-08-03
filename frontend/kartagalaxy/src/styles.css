@@ -2,4 +2,6 @@
 
 @import "tailwindcss";
 @import "tailwindcss-primeui";
-@import "./app/styles/scrollbar.css"
+
+@import "./app/styles/scrollbar.css";
+@import "./app/styles/layout.css";
