@@ -29,6 +29,7 @@ export class Tableau {
 
   refresh() {
     this.tableauService.getCards().subscribe((cards) => this.cards.set(cards));
+    this.tableauService.getBits().subscribe((bits) => this.bits.set(bits));
   }
 
   protected removeCard(id: string): void {

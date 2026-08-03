@@ -1,6 +1,7 @@
 package com.kartagalaxy.backend.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,14 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kartagalaxy.backend.model.TableauBitData;
 import com.kartagalaxy.backend.repository.TableauBitRepository;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/tableau/bits")
@@ -34,9 +33,14 @@ public class TableauBitController {
         return repository.findAll();
     }
 
-    @PostMapping
-    public TableauBitData create(@Valid @RequestBody TableauBitData item) {
-        return repository.save(item);
+    @PostMapping(consumes = "multipart/form-data")
+    public TableauBitData create(
+            @RequestParam("url") String url) {
+        TableauBitData bit = new TableauBitData();
+
+        bit.setUrl(url);
+
+        return repository.save(bit);
     }
 
     @GetMapping("/{id}")
@@ -46,16 +50,16 @@ public class TableauBitController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TableauBitData> update(@PathVariable String id, @Valid @RequestBody TableauBitData item) {
-        return repository.findById(id)
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<TableauBitData> update(@PathVariable String id, @RequestParam("url") String url) {
+        Optional<TableauBitData> grabbedRepoItem = repository.findById(id);
+
+        return grabbedRepoItem
                 .map(existing -> {
-                    existing.setUrl(item.getUrl());
+                    existing.setUrl(url);
                     return ResponseEntity.ok(repository.save(existing));
                 })
-                .orElseGet(
-                        () -> ResponseEntity.notFound().build()
-                );
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -63,7 +67,7 @@ public class TableauBitController {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        
+
         repository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

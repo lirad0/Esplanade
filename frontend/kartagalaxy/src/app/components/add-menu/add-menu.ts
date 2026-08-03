@@ -6,6 +6,7 @@ import { TableauService } from "../../services/tableau.service";
 import { NotificationService } from "../../services/notification.service";
 import { TableauCard } from "../../models/tableau-card";
 import { MenuStage } from "../enums/menu-stage.enum";
+import { TableauBit } from "../../models/tableau-bit";
 
 @Component({
     selector: 'add-menu',
@@ -70,6 +71,23 @@ export class AddMenu implements OnInit {
 
                 this.openSlide.emit();
             });
+
+        this.#notificationService
+            .on<TableauBit>('tableau::editBit')
+            .subscribe(data => {
+                this.iframeFormGroup.setValue({
+                    id: data.id,
+                    url: data.url,
+                });
+
+                this.#notificationService.sendNotification("appnav::openSlide");
+
+                this.title = "Edit";
+
+                this.stage.set(MenuStage.IFRAME);
+
+                this.openSlide.emit();
+            });
     }
 
     saveLinkForm() {
@@ -108,16 +126,16 @@ export class AddMenu implements OnInit {
         const formData = new FormData();
 
         Object.keys(
-            this.linkFormGroup.controls
+            this.iframeFormGroup.controls
         )
             .forEach(
                 formControlName => {
-                    const control = this.linkFormGroup.get(formControlName);
+                    const control = this.iframeFormGroup.get(formControlName);
 
                     let val;
 
                     if (control?.value) {
-                        val = formControlName === "file" ? this.linkFormFile : control?.value;
+                        val = control?.value;
                     } else {
                         val = '';
                     }
