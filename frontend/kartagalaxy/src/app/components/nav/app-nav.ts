@@ -33,7 +33,7 @@ export class AppNav {
 	#router = inject(Router);
 
 	visible = false;
-	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'md'));
+	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'lg'));
 
 	getSidebarTransition(visible: boolean) {
 		return visible ? 'transform 0.3s' : 'transform none';

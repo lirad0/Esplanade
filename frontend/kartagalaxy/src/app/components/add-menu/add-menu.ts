@@ -90,6 +90,10 @@ export class AddMenu implements OnInit {
             });
     }
 
+    refreshTableau() {
+        this.#notificationService.sendNotification("tableau::refresh");
+    }
+
     saveLinkForm() {
         const formData = new FormData();
 
@@ -118,7 +122,7 @@ export class AddMenu implements OnInit {
         this.#tableauService.saveCard(
             formData
         ).subscribe(
-            (v) => console.info(v)
+            (v) => this.refreshTableau()
         )
     }
 
@@ -150,7 +154,7 @@ export class AddMenu implements OnInit {
         this.#tableauService.saveBit(
             formData
         ).subscribe(
-            (v) => console.info(v)
+            (v) => this.refreshTableau()
         )
     }
 

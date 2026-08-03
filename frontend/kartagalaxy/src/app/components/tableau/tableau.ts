@@ -25,6 +25,8 @@ export class Tableau {
 
   constructor() {
     this.refresh();
+
+    this.notificationService.on("tableau::refresh").subscribe(() => this.refresh());
   }
 
   refresh() {
