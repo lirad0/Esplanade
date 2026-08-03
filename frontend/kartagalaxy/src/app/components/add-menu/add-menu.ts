@@ -1,10 +1,12 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, inject, OnInit, Output, signal, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, Signal, signal, ViewChild, WritableSignal } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ButtonModule } from "primeng/button";
 import { TableauService } from "../../services/tableau.service";
 import { NotificationService } from "../../services/notification.service";
 import { TableauCard } from "../../models/tableau-card";
+import { MenuStage } from "../enums/menu-stage.enum";
+import { TableauBit } from "../../models/tableau-bit";
 
 @Component({
     selector: 'add-menu',
@@ -13,60 +15,99 @@ import { TableauCard } from "../../models/tableau-card";
     imports: [ReactiveFormsModule, CommonModule, FormsModule, ButtonModule]
 })
 export class AddMenu implements OnInit {
-	@ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+	MenuStage = MenuStage;
+    
+    @Output() openSlide = new EventEmitter<void>();
+    @Output() closeSlide = new EventEmitter<void>();
 
     #tableauService = inject(TableauService);
     #notificationService = inject(NotificationService);
 
-    file: File | null = null;
-    imageDataUrl = signal<string | null>(null);
-    form!: FormGroup;
+    title: String = "Add";
 
-    @Output() openSlide = new EventEmitter<void>();
-    @Output() closeSlide = new EventEmitter<void>();
+    stage: WritableSignal<MenuStage | undefined> = signal(undefined);
 
+    /* Link Form */
+    @ViewChild('linkFormFileInput') linkFormFileInput!: ElementRef<HTMLInputElement>;
+    linkFormFile: File | null = null;
+    linkFormImageDataUrl = signal<string | null>(null);
+    linkFormGroup!: FormGroup;
+
+    /* Iframe Form */
+    iframeFormGroup!: FormGroup;
+    
 	constructor(public fb: FormBuilder) { };
 
-    ngOnInit(): void {
-        this.form = this.fb.group({
+    ngOnInit(): void {  
+        this.linkFormGroup = this.fb.group({
             id: [''],
             name: [''],
             url: [null],
             file: [null]
         });
 
+        this.iframeFormGroup = this.fb.group({
+            id: [''],
+            url: [null],
+        });
+
         this.#notificationService
-            .on<TableauCard>('tableau::edit')
+            .on<TableauCard>('tableau::editCard')
             .subscribe(data => {
-                this.form.setValue({
+                this.linkFormGroup.setValue({
                     id: data.id,
                     name: data.name,
                     url: data.url,
                     file: null
                 });
 
-                this.imageDataUrl.set(data.imageUrl);
+                this.linkFormImageDataUrl.set(data.imageUrl);
 
                 this.#notificationService.sendNotification("appnav::openSlide");
+
+                this.title = "Edit";
+
+                this.stage.set(MenuStage.LINK);
+
+                this.openSlide.emit();
+            });
+
+        this.#notificationService
+            .on<TableauBit>('tableau::editBit')
+            .subscribe(data => {
+                this.iframeFormGroup.setValue({
+                    id: data.id,
+                    url: data.url,
+                });
+
+                this.#notificationService.sendNotification("appnav::openSlide");
+
+                this.title = "Edit";
+
+                this.stage.set(MenuStage.IFRAME);
 
                 this.openSlide.emit();
             });
     }
 
-    save() {
+    refreshTableau() {
+        this.#notificationService.sendNotification("tableau::refresh");
+    }
+
+    saveLinkForm() {
         const formData = new FormData();
 
         Object.keys(
-            this.form.controls
+            this.linkFormGroup.controls
         )
             .forEach(
                 formControlName => {
-                    const control = this.form.get(formControlName);
+                    const control = this.linkFormGroup.get(formControlName);
 
                     let val;
 
                     if (control?.value) {
-                        val = formControlName === "file" ? this.file : control?.value;
+                        val = formControlName === "file" ? this.linkFormFile : control?.value;
                     } else {
                         val = '';
                     }
@@ -81,7 +122,39 @@ export class AddMenu implements OnInit {
         this.#tableauService.saveCard(
             formData
         ).subscribe(
-            (v) => console.info(v)
+            (v) => this.refreshTableau()
+        )
+    }
+
+    saveIframeForm() {
+        const formData = new FormData();
+
+        Object.keys(
+            this.iframeFormGroup.controls
+        )
+            .forEach(
+                formControlName => {
+                    const control = this.iframeFormGroup.get(formControlName);
+
+                    let val;
+
+                    if (control?.value) {
+                        val = control?.value;
+                    } else {
+                        val = '';
+                    }
+
+                    formData.append(
+                        formControlName,
+                        val
+                    )
+                }
+            )
+
+        this.#tableauService.saveBit(
+            formData
+        ).subscribe(
+            (v) => this.refreshTableau()
         )
     }
 
@@ -89,16 +162,16 @@ export class AddMenu implements OnInit {
         const input = event.target as HTMLInputElement;
 
         if (input.files && input.files[0]) {
-            this.file = input.files[0];
+            this.linkFormFile = input.files[0];
             const reader = new FileReader();
 
             reader.onload = () => {
-                this.imageDataUrl.set(reader.result as string);
+                this.linkFormImageDataUrl.set(reader.result as string);
             };
 
-            reader.readAsDataURL(this.file);
+            reader.readAsDataURL(this.linkFormFile);
         } else {
-            this.imageDataUrl.set(null);
+            this.linkFormImageDataUrl.set(null);
         }
 
     }
@@ -108,17 +181,21 @@ export class AddMenu implements OnInit {
     }
 
     triggerFileInput() {
-        this.fileInput.nativeElement.click();
+        this.linkFormFileInput.nativeElement.click();
     }
 
     resetForm() {
-        this.form.setValue({
+        this.linkFormGroup.setValue({
 			id: [''],
 			name: [''],
 			url: [null],
 			file: [null]
 		})
 
-		this.imageDataUrl.set('');
+		this.linkFormImageDataUrl.set('');
+
+        this.title = "Add";
+
+        this.stage.set(undefined);
     }
 }

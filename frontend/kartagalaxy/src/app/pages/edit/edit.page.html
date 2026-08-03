@@ -1,4 +1,4 @@
-<main class="main flex flex-row min-h-screen bg-neutral-950">
+<main class="main">
   <div class="w-16">
     <app-nav
       [showCustomizeButton]="false"
@@ -14,7 +14,7 @@
       #drawer
     ></app-nav>
   </div>
-  <div class="content flex-1 p-4">
+  <div class="main__tableau-container">
     <tableau [editMode]="true" (selectionChange)="onSelectionChange($event)" #tableau></tableau>
   </div>
 </main>

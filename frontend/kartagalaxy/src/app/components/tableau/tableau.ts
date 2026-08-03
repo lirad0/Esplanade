@@ -6,7 +6,6 @@ import { TableauCard } from "../../models/tableau-card";
 import { TableauBit } from "../../models/tableau-bit";
 import { NotificationService } from "../../services/notification.service";
 import { take } from "rxjs/internal/operators/take";
-import { Card } from "../types/card";
 
 @Component({
   imports: [GenericCard, WeatherCard],
@@ -25,7 +24,14 @@ export class Tableau {
   protected readonly selectedItemIds = signal<string[]>([]);
 
   constructor() {
+    this.refresh();
+
+    this.notificationService.on("tableau::refresh").subscribe(() => this.refresh());
+  }
+
+  refresh() {
     this.tableauService.getCards().subscribe((cards) => this.cards.set(cards));
+    this.tableauService.getBits().subscribe((bits) => this.bits.set(bits));
   }
 
   protected removeCard(id: string): void {
@@ -92,9 +98,15 @@ export class Tableau {
       return;
     }
 
+    this.tableauService.getBitFromCache(selectedId).pipe(take(1)).subscribe((bit) => {
+      if (bit) {
+        this.notificationService.sendNotification('tableau::editBit', { id: selectedId, url: bit.url });
+      }
+    }); 
+
     this.tableauService.getCardFromCache(selectedId).pipe(take(1)).subscribe((card) => {
       if (card) {
-        this.notificationService.sendNotification('tableau::edit', { id: selectedId, name: card.name, url: card.url, imageUrl: card.imageUrl });
+        this.notificationService.sendNotification('tableau::editCard', { id: selectedId, name: card.name, url: card.url, imageUrl: card.imageUrl });
       }
     }); 
   }

@@ -1,0 +1,7 @@
+.main {
+    @apply flex flex-col md:flex-row min-h-screen bg-neutral-950
+}
+
+.main__tableau-container {
+    @apply flex-1 px-4 md:p-4
+}
