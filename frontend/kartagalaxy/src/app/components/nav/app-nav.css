@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
 .navbar {
-    @apply h-full w-full min-w-screen md:min-w-min justify-between md:min-h-screen text-white flex md:flex-col items-center py-4
+    @apply h-full w-full text-white flex py-4 grow
+}
+
+.navbar__content {
+    @apply flex md:h-[97vh] md:flex-col items-center justify-between md:fixed md:min-w-min min-w-screen md:pl-2;
 }
