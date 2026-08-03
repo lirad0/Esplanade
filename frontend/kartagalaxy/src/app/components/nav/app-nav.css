@@ -5,5 +5,5 @@
 }
 
 .navbar__content {
-    @apply flex md:h-[97vh] md:flex-col items-center justify-between md:fixed md:min-w-min min-w-screen md:pl-2;
+    @apply flex md:h-[96vh] md:flex-col items-center justify-between md:fixed md:min-w-min min-w-screen md:pl-2;
 }
