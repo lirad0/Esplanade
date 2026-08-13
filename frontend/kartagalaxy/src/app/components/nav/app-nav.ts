@@ -44,13 +44,13 @@ export class AppNav {
 		}
 	}
 
-	getSidebarTranslation(visible: boolean): string {
+	getSidebarTranslation(): string {
 		let translation;
 
 		if (this.isMobile()) {
-			translation = visible ? 'translateX(0)' : 'translateX(-100%)';
+			translation = this.visible ? 'translateX(0)' : 'translateX(-100%)';
 		} else {
-			translation = visible ? 'translateX(0)' : 'translateX(-768px)';
+			translation = this.visible ? 'translateX(0)' : 'translateX(-768px)';
 		}
 
 		return translation;
