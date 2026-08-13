@@ -33,10 +33,15 @@ export class AppNav {
 	#router = inject(Router);
 
 	visible = false;
+	closed = true;
 	isMobile = toSignal(this.#mediaService.mediaQuery('max', 'lg'));
 
-	getSidebarTransition(visible: boolean) {
-		return visible ? 'transform 0.3s' : 'transform none';
+	getSidebarTransition() {
+		if (this.closed) {
+			return "";
+		} else {
+			return "transform 0.3s";
+		}
 	}
 
 	getSidebarTranslation(visible: boolean): string {
@@ -53,11 +58,13 @@ export class AppNav {
 
 	open() {
 		this.visible = true;
+		this.closed = false;
 	}
 
 	close() {
 		this.visible = false;
 
+		setTimeout(() => this.closed = true, 300); // for the animation to play only when closing
 		this.addMenu.resetForm();
 	}
 
@@ -65,6 +72,7 @@ export class AppNav {
 
 	back(event: Event) {
 		this.visible = false;
+		this.closed = false;
 		this.backClick.emit();
 	}
 
