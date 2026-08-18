@@ -1,14 +1,38 @@
 server:
   port: ${SERVER_PORT:8080}
 
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:2000/esplanade}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:verysecretlocalpassword}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+    validate-on-migrate: true
+    clean-disabled: true
+
 ---
 spring:
   config:
     activate:
       on-profile: local
-  data:
-    mongodb:
-      uri: ${MONGODB_LOCAL_URI:mongodb://root:verysecretlocalpassword@mongodb:27017/esplanade?authSource=admin}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:2000/esplanade}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:verysecretlocalpassword}
+    driver-class-name: org.postgresql.Driver
+
 minio:
   endpoint: ${MINIO_LOCAL_ENDPOINT:minio-server-local}
   port: ${MINIO_LOCAL_PORT:9000}
@@ -22,9 +46,12 @@ spring:
   config:
     activate:
       on-profile: dev
-  data:
-    mongodb:
-      uri: ${MONGODB_DEV_URI:mongodb://localhost:27016/esplanade}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:2001/esplanade}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:verysecretlocalpassword}
+    driver-class-name: org.postgresql.Driver
+
 minio:
   endpoint: ${MINIO_LOCAL_ENDPOINT:localhost}
   port: ${MINIO_LOCAL_PORT:9002}
@@ -38,9 +65,12 @@ spring:
   config:
     activate:
       on-profile: prod
-  data:
-    mongodb:
-      uri: ${MONGODB_PROD_URI:mongodb://localhost:27017/esplanade}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:2000/esplanade}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:verysecretlocalpassword}
+    driver-class-name: org.postgresql.Driver
+
 minio:
   endpoint: ${MINIO_LOCAL_ENDPOINT:localhost}
   port: ${MINIO_LOCAL_PORT:9000}

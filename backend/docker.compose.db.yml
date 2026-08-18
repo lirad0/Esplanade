@@ -4,8 +4,9 @@ services:
     container_name: esplanade-postgres
     shm_size: 128mb
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=verysecretlocalpassword
+      POSTGRES_DB: esplanade
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: verysecretlocalpassword
     ports:
       - "2000:5432"
     volumes:

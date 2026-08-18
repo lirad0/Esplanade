@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS tableau_cards (
+    id VARCHAR(36) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    image_name VARCHAR(255),
+    url TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tableau_bits (
+    id VARCHAR(36) PRIMARY KEY,
+    url TEXT NOT NULL
+);
