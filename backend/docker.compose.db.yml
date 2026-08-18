@@ -1,19 +1,20 @@
 services:
-  mongodb:
-    image: mongodb/mongodb-enterprise-server:8.0.26-ubi9-slim
-    container_name: esplanade-mongodb
+  postgres:
+    image: postgres:14.24-alpine3.23
+    container_name: esplanade-postgres
+    shm_size: 128mb
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=verysecretlocalpassword
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=verysecretlocalpassword
     ports:
-      - "27017:27017"
+      - "2000:5432"
     volumes:
-      - mongodb-data:/data/db
+      - postgres-data:/data/db
     networks:
       - esplanade-network
 
 volumes:
-  mongodb-data:
+  postgres-data:
 
 networks:
   esplanade-network:
