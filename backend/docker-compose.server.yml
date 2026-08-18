@@ -8,7 +8,7 @@ services:
       SERVER_PORT: 8080
       DEBUG: ${DEBUG:-false}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://esplanade-postgres:5432/esplanade}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://esplanade-postgres:2000/esplanade}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-verysecretlocalpassword}
     extra_hosts:
