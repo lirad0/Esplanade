@@ -1,4 +1,4 @@
-# TV Dashboard Backend
+# Esplanade Backend
 
 This module provides a Spring Boot backend for the Angular App.
 
