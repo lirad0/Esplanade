@@ -4,7 +4,7 @@ services:
     image: elasticio/minio:26.27
     container_name: minio-server-local
     networks:
-      - kartagalaxy-network
+      - esplanade-network
     ports:
       - "9000:9000" # Local S3 API port
       - "9001:9001" # Local Web UI Console port
@@ -20,7 +20,7 @@ services:
     image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     container_name: minio-client-setup
     networks:
-      - kartagalaxy-network
+      - esplanade-network
     depends_on:
       - minio-local
     entrypoint: [ "/bin/sh", "-c" ]
@@ -42,5 +42,5 @@ services:
        echo 'Setup completed successfully!';"
 
 networks:
-  kartagalaxy-network:
+  esplanade-network:
     external: true

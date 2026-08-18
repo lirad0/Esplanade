@@ -10,10 +10,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.kartagalaxy</groupId>
-    <artifactId>kartagalaxy</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>kartagalaxy</name>
+    <groupId>com.esplanade</groupId>
+    <artifactId>esplanade</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+    <name>esplanade</name>
     <description>Spring Boot CRUD backend for the TV dashboard tableau cards and URL-only entries</description>
 
     <properties>

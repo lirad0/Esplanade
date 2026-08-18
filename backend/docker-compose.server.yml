@@ -1,22 +1,22 @@
 services:
-  kartagalaxy-backend:
+  esplanade-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: kartagalaxy-backend
+    container_name: esplanade-backend
     environment:
       SERVER_PORT: 8080
       DEBUG: ${DEBUG:-false}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
-      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/kartagalaxy?authSource=admin}
+      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/esplanade?authSource=admin}
       MONGODB_DEV_URI: ${MONGODB_DEV_URI}
       MONGODB_PROD_URI: ${MONGODB_PROD_URI}
     ports:
       - "8001:8080"
       - "5006:5005"
     networks:
-      - kartagalaxy-network
+      - esplanade-network
 
 networks:
-  kartagalaxy-network:
-    name: kartagalaxy-network
+  esplanade-network:
+    name: esplanade-network
