@@ -8,9 +8,11 @@ services:
       SERVER_PORT: 8080
       DEBUG: ${DEBUG:-false}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-local}
-      MONGODB_LOCAL_URI: ${MONGODB_LOCAL_URI:-mongodb://root:verysecretlocalpassword@mongodb:27017/esplanade?authSource=admin}
-      MONGODB_DEV_URI: ${MONGODB_DEV_URI}
-      MONGODB_PROD_URI: ${MONGODB_PROD_URI}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://esplanade-postgres:5432/esplanade}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-verysecretlocalpassword}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "8001:8080"
       - "5006:5005"
