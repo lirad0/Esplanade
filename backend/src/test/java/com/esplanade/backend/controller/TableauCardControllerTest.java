@@ -4,27 +4,28 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.esplanade.backend.config.MinioProperties;
 import com.esplanade.backend.controller.TableauCardController;
 import com.esplanade.backend.model.TableauCardData;
 import com.esplanade.backend.repository.TableauCardRepository;
-
-import io.minio.MinioClient;
+import com.esplanade.backend.services.MinioService;
+import com.esplanade.backend.services.NetworkService;
+import org.springframework.mock.web.MockMultipartFile;
 
 @WebMvcTest(TableauCardController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class TableauCardControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -33,25 +34,17 @@ class TableauCardControllerTest {
     private TableauCardRepository repository;
 
     @MockBean
-    private MinioClient minioClient;
+    private MinioService minioService;
 
     @MockBean
-    private MinioProperties minioProperties;
+    private NetworkService networkService;
 
     @Test
-    void shouldCreateCard() throws Exception {
-        TableauCardData card = new TableauCardData();
-        card.setName("Sample");
-        card.setImageName("sample.png");
-        card.setUrl("https://example.com");
-
-        when(repository.save(any(TableauCardData.class))).thenReturn(card);
-
+    void shouldRejectJsonCardCreation() throws Exception {
         mockMvc.perform(post("/api/tableau/cards")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Sample\",\"imageName\":\"sample.png\",\"url\":\"https://example.com\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Sample"));
+                .andExpect(status().isUnsupportedMediaType());
     }
 
     @Test
@@ -61,8 +54,7 @@ class TableauCardControllerTest {
         card.setImageName("generated-image.png");
         card.setUrl("https://example.com");
 
-        when(minioProperties.getBucket()).thenReturn("images");
-        doReturn(null).when(minioClient).putObject(any());
+        when(minioService.insertImage(any(), anyLong())).thenReturn("generated-image.png");
         when(repository.save(any(TableauCardData.class))).thenReturn(card);
 
         mockMvc.perform(multipart("/api/tableau/cards")
